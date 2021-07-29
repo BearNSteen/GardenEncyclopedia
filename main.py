@@ -2,6 +2,8 @@ from PySide6 import QtCore, QtWidgets, QtGui
 import sys, random, os, pickle, datetime, requests, geocoder
 os.chdir(os.path.dirname(sys.argv[0]))
 
+# Garden Encyclopedia by Dan, written with PyQT
+
 class MainMenu(QtWidgets.QWidget):
     def __init__(self, parent=None, plant_list=None):
         super(MainMenu, self).__init__(parent)
