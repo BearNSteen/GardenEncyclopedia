@@ -1,9 +1,5 @@
 from PySide6 import QtCore, QtWidgets, QtGui
-import sys
-import random
-import os
-import pickle
-import datetime
+import sys, random, os, pickle, datetime, requests, geocoder
 os.chdir(os.path.dirname(sys.argv[0]))
 
 class MainMenu(QtWidgets.QWidget):
@@ -93,6 +89,7 @@ class BrowseMenu(QtWidgets.QWidget):
 
         self.text_widget = QtWidgets.QTextBrowser(self)
         self.menu_widget = QtWidgets.QListWidget()
+        self.search_bar = QtWidgets.QTextEdit()
         index = None
         if selected != None:
             for i in range(len(self.plant_list)):
@@ -166,7 +163,7 @@ class BrowseMenu(QtWidgets.QWidget):
             font-size: 18px;
         }
         """)
-
+ 
     def selectionChanged(self):
         selected = self.menu_widget.selectedItems()[0].text()
         index = None
@@ -191,6 +188,26 @@ class Watering(QtWidgets.QWidget):
         self.plants = plants
         status_text = "No flower selected."
         empty_flower = "No flower selected."
+
+        # get weather information
+        g = geocoder.ip('me')
+        location = g.postal
+        URL = f"http://flip2.engr.oregonstate.edu:4643/{location}"
+        r = requests.get(url=URL)
+        info = r.json()
+        if "error" not in info:
+            weather_string = ""
+            temp = info["temperature"]
+            if temp != "":
+                weather_string += temp
+            rain = info["chance_of_rain"]
+            if rain != "":
+                weather_string += f" | Chance of Rain: {rain}"
+            cond = info["conditions"]
+            if cond != "":
+                weather_string += f" | {cond}"
+        else:
+            weather_string = "Could not retrieve weather information."
 
         # set all the texts for flowers regardless if they were added to list
         size = QtCore.QSize(315,258)
@@ -285,36 +302,40 @@ class Watering(QtWidgets.QWidget):
 
         if self.plants[0][1] == datetime.date.today():
             self.water1 = QtWidgets.QPushButton("Water Now")
+        elif self.plants[0][1] == None:
+            self.water1 = QtWidgets.QPushButton("No Plant")
         elif self.plants[0][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water1 = QtWidgets.QPushButton("Water Tomorrow")
             self.water1.setEnabled(False)
         else:
-            self.water1 = QtWidgets.QPushButton("No Plant")
-            self.water1.setEnabled(False)
+            self.water1 = QtWidgets.QPushButton("Water Now")
         if self.plants[1][1] == datetime.date.today():
             self.water2 = QtWidgets.QPushButton("Water Now")
+        elif self.plants[1][1] == None:
+            self.water2 = QtWidgets.QPushButton("No Plant")
         elif self.plants[1][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water2 = QtWidgets.QPushButton("Water Tomorrow")
             self.water2.setEnabled(False)
         else:
-            self.water2 = QtWidgets.QPushButton("No Plant")
-            self.water2.setEnabled(False)
+            self.water2 = QtWidgets.QPushButton("Water Now")
         if self.plants[2][1] == datetime.date.today():
             self.water3 = QtWidgets.QPushButton("Water Now")
+        elif self.plants[2][1] == None:
+            self.water3 = QtWidgets.QPushButton("No Plant")
         elif self.plants[2][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water3 = QtWidgets.QPushButton("Water Tomorrow")
             self.water3.setEnabled(False)
         else:
-            self.water3 = QtWidgets.QPushButton("No Plant")
-            self.water3.setEnabled(False)
+            self.water3 = QtWidgets.QPushButton("Water Now")
         if self.plants[3][1] == datetime.date.today():
             self.water4 = QtWidgets.QPushButton("Water Now")
+        elif self.plants[3][1] == None:
+            self.water4 = QtWidgets.QPushButton("No Plant")
         elif self.plants[3][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water4 = QtWidgets.QPushButton("Water Tomorrow")
             self.water4.setEnabled(False)
         else:
-            self.water4 = QtWidgets.QPushButton("No Plant")
-            self.water4.setEnabled(False)
+            self.water4 = QtWidgets.QPushButton("Water Now")
         self.back_button = QtWidgets.QPushButton("Back")
         self.back_button.setStyleSheet(f"""font-size:36px;""")
 
@@ -332,6 +353,10 @@ class Watering(QtWidgets.QWidget):
         butstat4.addWidget(self.water4)
 
         watering_list = QtWidgets.QVBoxLayout()
+        weather = QtWidgets.QLabel(weather_string)
+        weather.setAlignment(QtCore.Qt.AlignCenter)
+        weather.setStyleSheet("font-size:36px")
+        watering_list.addWidget(weather)
         watering_list.addWidget(rt1)
         watering_list.addLayout(butstat1)
         watering_list.addWidget(rt2)
