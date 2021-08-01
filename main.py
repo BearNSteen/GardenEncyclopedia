@@ -192,24 +192,7 @@ class Watering(QtWidgets.QWidget):
         empty_flower = "No flower selected."
 
         # get weather information
-        g = geocoder.ip('me')
-        location = g.postal
-        URL = f"http://flip2.engr.oregonstate.edu:4643/{location}"
-        r = requests.get(url=URL)
-        info = r.json()
-        if "error" not in info:
-            weather_string = ""
-            temp = info["temperature"]
-            if temp != "":
-                weather_string += temp
-            rain = info["chance_of_rain"]
-            if rain != "":
-                weather_string += f" | Chance of Rain: {rain}"
-            cond = info["conditions"]
-            if cond != "":
-                weather_string += f" | {cond}"
-        else:
-            weather_string = "Could not retrieve weather information."
+
 
         # set all the texts for flowers regardless if they were added to list
         size = QtCore.QSize(315,258)
@@ -354,11 +337,14 @@ class Watering(QtWidgets.QWidget):
         butstat4.addWidget(self.status4)
         butstat4.addWidget(self.water4)
 
+        self.weather = QtWidgets.QLabel("Click on Get Weather (Requires OSU VPN)")
+        self.weather.setAlignment(QtCore.Qt.AlignCenter)
+        self.weather.setStyleSheet("font-size:24px")
+        get_weather = QtWidgets.QPushButton("Get Weather")
+
         watering_list = QtWidgets.QVBoxLayout()
-        weather = QtWidgets.QLabel(weather_string)
-        weather.setAlignment(QtCore.Qt.AlignCenter)
-        weather.setStyleSheet("font-size:36px")
-        watering_list.addWidget(weather)
+        watering_list.addWidget(self.weather)
+        watering_list.addWidget(get_weather)
         watering_list.addWidget(rt1)
         watering_list.addLayout(butstat1)
         watering_list.addWidget(rt2)
@@ -382,6 +368,7 @@ class Watering(QtWidgets.QWidget):
         self.water2.clicked.connect(self.water_2)
         self.water3.clicked.connect(self.water_3)
         self.water4.clicked.connect(self.water_4)
+        get_weather.clicked.connect(self.get_weather)
 
         self.setStyleSheet("""
             QLabel {
@@ -428,6 +415,27 @@ class Watering(QtWidgets.QWidget):
         self.status4.setText(f"Water next on: {self.plants[3][1]}.")
         with open('savefile.txt', 'wb') as save:
             pickle.dump(self.plants, save)
+
+    def get_weather(self):
+        g = geocoder.ip('me')
+        location = g.postal
+        URL = f"http://flip2.engr.oregonstate.edu:4643/{location}"
+        r = requests.get(url=URL)
+        info = r.json()
+        if "error" not in info:
+            weather_string = ""
+            temp = info["temperature"]
+            if temp != "":
+                weather_string += temp
+            rain = info["chance_of_rain"]
+            if rain != "":
+                weather_string += f" | Chance of Rain: {rain}"
+            cond = info["conditions"]
+            if cond != "":
+                weather_string += f" | {cond}"
+        else:
+            weather_string = "Could not retrieve weather information."
+        self.weather.setText(weather_string)
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -557,6 +565,8 @@ To remove a plant from the watering tracker:
 1) Navigate to the flower you have added via the "Browse Plants" menu.
 2) Click on the "Remove from Watering" button.
 The plant you have chosen will be removed from the Watering list.
+
+Please note: watering support for more than 4 flowers will be added at a later date.
         """)
         self.warning.setStandardButtons(QtWidgets.QMessageBox.Ok)
         self.warning.show()
