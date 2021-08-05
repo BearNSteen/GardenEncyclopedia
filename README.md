@@ -1,5 +1,5 @@
 # GardenEncyclopedia
- This was a project for CS361: Software Engineering I.
+ This was a self-designed project for CS361: Software Engineering I.
 
  This is a purposely incomplete Encyclopedia on plants and watering. There was no possible way that I would make an actual complete encyclopedia in 2 weeks, but this is a reasonable version of a larger idea. Currently, it only contains plants that grow in the Pittsburgh, Pennsylvania area, and even at that, it is only more common perennials. Regardless, this project is more an exploration of what PyQT can do, as I had never used it before.
 
