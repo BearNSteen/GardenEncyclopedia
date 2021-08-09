@@ -13,48 +13,56 @@ class MainMenu(QtWidgets.QWidget):
         random_plant = choice[1]
         self.label = choice[0]
 
-        self.button1 = QtWidgets.QPushButton("BROWSE PLANTS")
-        self.button1.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
-        self.button1.setStyleSheet("""font-size:36px;""")
+        self.button_1 = QtWidgets.QPushButton("BROWSE PLANTS")
+        self.button_1.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        self.button_1.setStyleSheet("""font-size:36px;""")
+        self.button_1.setToolTip("Browse the flowers in the Encyclopedia for knowledge, or reference.")
 
-        self.button2 = QtWidgets.QPushButton("RANDOM PLANT")
-        self.button2.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
-        self.button2.setStyleSheet("""font-size:36px;""")
+        self.button_2 = QtWidgets.QPushButton("RANDOM PLANT")
+        self.button_2.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        self.button_2.setStyleSheet("""font-size:36px;""")
+        self.button_2.setToolTip("Send yourself to a random flower in the Encyclopedia to introduce yourself to a new flower.")
 
-        self.button3 = QtWidgets.QPushButton("WATERING")
-        self.button3.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
-        self.button3.setStyleSheet("""font-size:36px;""")
+        self.button_3 = QtWidgets.QPushButton("WATERING")
+        self.button_3.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        self.button_3.setStyleSheet("""font-size:36px;""")
+        self.button_3.setToolTip("Track several plants for daily watering needs, for the gardener.")
 
-        self.button4 = QtWidgets.QPushButton("EXIT")
-        self.button4.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
-        self.button4.setStyleSheet(f"""font-size:36px;""")
+        self.button_4 = QtWidgets.QPushButton("EXIT")
+        self.button_4.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        self.button_4.setStyleSheet(f"""font-size:36px;""")
+        self.button_4.setToolTip("Exit the Encylopedia.")
 
         size = QtCore.QSize(600,600)
         self.picture = QtWidgets.QLabel(self, alignment=QtCore.Qt.AlignCenter)
         self.picture.setPixmap(QtGui.QPixmap(f"./flowers/pics/{random_plant}.png").scaled(size))
         self.picture.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
 
-        self.button5 = QtWidgets.QPushButton(f"{self.label}")
-        self.button7 = QtWidgets.QPushButton("HELP")
-        self.button7.setStyleSheet("""font-size:36px;""")
+        self.button_5 = QtWidgets.QPushButton(f"{self.label}")
+        self.button_7 = QtWidgets.QPushButton("HELP")
+        self.button_7.setStyleSheet("""font-size:36px;""")
 
         self.text = QtWidgets.QLabel("PLANT ENCYCLOPEDIA VERSION 0.3",
                                     alignment=QtCore.Qt.AlignTop | QtCore.Qt.AlignHCenter)
-        self.text.setStyleSheet("""font-size:56px; background-color:{QtGui.QColor(255,0,0).name}; color:white;""")
+        self.text.setStyleSheet("""
+            font-size:56px; 
+            background-color:{QtGui.QColor(255,0,0).name}; 
+            color:white;
+            """)
         self.bg = QtWidgets.QLabel(self)
         
         self.rand_pic = QtWidgets.QVBoxLayout(self)
         self.rand_pic.addWidget(self.picture, 5)
-        self.rand_pic.addWidget(self.button5)
+        self.rand_pic.addWidget(self.button_5)
         pic_layout = QtWidgets.QWidget()
         pic_layout.setLayout(self.rand_pic)
 
         self.layout = QtWidgets.QVBoxLayout(self)
-        self.layout.addWidget(self.button1)
-        self.layout.addWidget(self.button2)
-        self.layout.addWidget(self.button3)
-        self.layout.addWidget(self.button7)
-        self.layout.addWidget(self.button4)
+        self.layout.addWidget(self.button_1)
+        self.layout.addWidget(self.button_2)
+        self.layout.addWidget(self.button_3)
+        self.layout.addWidget(self.button_7)
+        self.layout.addWidget(self.button_4)
         main_widget = QtWidgets.QWidget()
         main_widget.setLayout(self.layout)
 
@@ -191,17 +199,19 @@ class Watering(QtWidgets.QWidget):
         status_text = "No flower selected."
         empty_flower = "No flower selected."
 
-        # get weather information
-
+        self.rem_button_1 = QtWidgets.QPushButton("Remove")
+        self.rem_button_2 = QtWidgets.QPushButton("Remove")
+        self.rem_button_3 = QtWidgets.QPushButton("Remove")
+        self.rem_button_4 = QtWidgets.QPushButton("Remove")
 
         # set all the texts for flowers regardless if they were added to list
         size = QtCore.QSize(315,258)
         if plants[0][0] != None:
             text1 = QtWidgets.QLabel(f"{plants[0][0]}")
             text1.setAlignment(QtCore.Qt.AlignCenter)
-            rt1 = QtWidgets.QLabel(f"{plants[0][0]}")
-            rt1.setAlignment(QtCore.Qt.AlignCenter)
-            rt1.setStyleSheet("font-size:36px")
+            plant_name_1 = QtWidgets.QLabel(f"{plants[0][0]}")
+            plant_name_1.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_1.setStyleSheet("font-size:36px")
             self.status1 = QtWidgets.QLabel(f"Water next on: {plants[0][1]}.")
             self.status1.setAlignment(QtCore.Qt.AlignCenter)   
             pic1 = QtWidgets.QLabel(self)
@@ -209,18 +219,19 @@ class Watering(QtWidgets.QWidget):
         else:
             text1 = QtWidgets.QLabel(empty_flower)
             text1.setAlignment(QtCore.Qt.AlignCenter)
-            rt1 = QtWidgets.QLabel(empty_flower)
-            rt1.setAlignment(QtCore.Qt.AlignCenter)
-            rt1.setStyleSheet("font-size:36px")
+            plant_name_1 = QtWidgets.QLabel(empty_flower)
+            plant_name_1.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_1.setStyleSheet("font-size:36px")
             self.status1 = QtWidgets.QLabel(status_text)
             self.status1.setAlignment(QtCore.Qt.AlignCenter) 
             pic1 = QtWidgets.QLabel()
+            self.rem_button_1.setEnabled(False)
         if plants[1][0] != None:
             text2 = QtWidgets.QLabel(f"{plants[1][0]}")
             text2.setAlignment(QtCore.Qt.AlignCenter)
-            rt2 = QtWidgets.QLabel(f"{plants[1][0]}")
-            rt2.setAlignment(QtCore.Qt.AlignCenter)
-            rt2.setStyleSheet("font-size:36px")
+            plant_name_2 = QtWidgets.QLabel(f"{plants[1][0]}")
+            plant_name_2.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_2.setStyleSheet("font-size:36px")
             self.status2 = QtWidgets.QLabel(f"Water next on: {plants[1][1]}.")
             self.status2.setAlignment(QtCore.Qt.AlignCenter) 
             pic2 = QtWidgets.QLabel(self)
@@ -228,18 +239,19 @@ class Watering(QtWidgets.QWidget):
         else:
             text2 = QtWidgets.QLabel(empty_flower)
             text2.setAlignment(QtCore.Qt.AlignCenter)
-            rt2 = QtWidgets.QLabel(empty_flower)
-            rt2.setAlignment(QtCore.Qt.AlignCenter)
-            rt2.setStyleSheet("font-size:36px")
+            plant_name_2 = QtWidgets.QLabel(empty_flower)
+            plant_name_2.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_2.setStyleSheet("font-size:36px")
             self.status2 = QtWidgets.QLabel(status_text)
             self.status2.setAlignment(QtCore.Qt.AlignCenter) 
             pic2 = QtWidgets.QLabel()
+            self.rem_button_2.setEnabled(False)
         if plants[2][0] != None:
             text3 = QtWidgets.QLabel(f"{plants[2][0]}")
             text3.setAlignment(QtCore.Qt.AlignCenter)
-            rt3 = QtWidgets.QLabel(f"{plants[2][0]}")
-            rt3.setAlignment(QtCore.Qt.AlignCenter)
-            rt3.setStyleSheet("font-size:36px")
+            plant_name_3 = QtWidgets.QLabel(f"{plants[2][0]}")
+            plant_name_3.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_3.setStyleSheet("font-size:36px")
             self.status3 = QtWidgets.QLabel(f"Water next on: {plants[2][1]}.")
             self.status3.setAlignment(QtCore.Qt.AlignCenter) 
             pic3 = QtWidgets.QLabel(self)
@@ -247,18 +259,19 @@ class Watering(QtWidgets.QWidget):
         else:
             text3 = QtWidgets.QLabel(empty_flower)
             text3.setAlignment(QtCore.Qt.AlignCenter)
-            rt3 = QtWidgets.QLabel(empty_flower)
-            rt3.setAlignment(QtCore.Qt.AlignCenter)
-            rt3.setStyleSheet("font-size:36px")
+            plant_name_3 = QtWidgets.QLabel(empty_flower)
+            plant_name_3.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_3.setStyleSheet("font-size:36px")
             self.status3 = QtWidgets.QLabel(status_text)
             self.status3.setAlignment(QtCore.Qt.AlignCenter) 
             pic3 = QtWidgets.QLabel()
+            self.rem_button_3.setEnabled(False)
         if plants[3][0] != None:
             text4 = QtWidgets.QLabel(f"{plants[3][0]}")
             text4.setAlignment(QtCore.Qt.AlignCenter)
-            rt4 = QtWidgets.QLabel(f"{plants[3][0]}")
-            rt4.setAlignment(QtCore.Qt.AlignCenter)
-            rt4.setStyleSheet("font-size:36px")
+            plant_name_4 = QtWidgets.QLabel(f"{plants[3][0]}")
+            plant_name_4.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_4.setStyleSheet("font-size:36px")
             self.status4 = QtWidgets.QLabel(f"Water next on: {plants[3][1]}.")
             self.status4.setAlignment(QtCore.Qt.AlignCenter) 
             pic4 = QtWidgets.QLabel(self)
@@ -266,29 +279,47 @@ class Watering(QtWidgets.QWidget):
         else:
             text4 = QtWidgets.QLabel(empty_flower)
             text4.setAlignment(QtCore.Qt.AlignCenter)
-            rt4 = QtWidgets.QLabel(empty_flower)
-            rt4.setAlignment(QtCore.Qt.AlignCenter)
-            rt4.setStyleSheet("font-size:36px")
+            plant_name_4 = QtWidgets.QLabel(empty_flower)
+            plant_name_4.setAlignment(QtCore.Qt.AlignCenter)
+            plant_name_4.setStyleSheet("font-size:36px")
             self.status4 = QtWidgets.QLabel(status_text)
             self.status4.setAlignment(QtCore.Qt.AlignCenter) 
             pic4 = QtWidgets.QLabel()
+            self.rem_button_4.setEnabled(False)
+
+        pic_text_1 = QtWidgets.QHBoxLayout()
+        pic_text_1.addWidget(text1, 3)
+        pic_text_1.addWidget(self.rem_button_1, 1)
+
+        pic_text_2 = QtWidgets.QHBoxLayout()
+        pic_text_2.addWidget(text2, 3)
+        pic_text_2.addWidget(self.rem_button_2, 1)
+
+        pic_text_3 = QtWidgets.QHBoxLayout()
+        pic_text_3.addWidget(text3, 3)
+        pic_text_3.addWidget(self.rem_button_3, 1)
+
+        pic_text_4 = QtWidgets.QHBoxLayout()
+        pic_text_4.addWidget(text4, 3)
+        pic_text_4.addWidget(self.rem_button_4, 1)
 
         layout1 = QtWidgets.QVBoxLayout()
         layout1.addWidget(pic1, 3)
-        layout1.addWidget(text1, 1)
+        layout1.addLayout(pic_text_1)
         layout1.addWidget(pic3, 3)
-        layout1.addWidget(text3, 1)
+        layout1.addLayout(pic_text_3)
 
         layout2 = QtWidgets.QVBoxLayout()
         layout2.addWidget(pic2, 3)
-        layout2.addWidget(text2, 1)
+        layout2.addLayout(pic_text_2)
         layout2.addWidget(pic4, 3)
-        layout2.addWidget(text4, 1)
+        layout2.addLayout(pic_text_4)
 
         if self.plants[0][1] == datetime.date.today():
             self.water1 = QtWidgets.QPushButton("Water Now")
         elif self.plants[0][1] == None:
             self.water1 = QtWidgets.QPushButton("No Plant")
+            self.water1.setEnabled(False)
         elif self.plants[0][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water1 = QtWidgets.QPushButton("Water Tomorrow")
             self.water1.setEnabled(False)
@@ -298,6 +329,7 @@ class Watering(QtWidgets.QWidget):
             self.water2 = QtWidgets.QPushButton("Water Now")
         elif self.plants[1][1] == None:
             self.water2 = QtWidgets.QPushButton("No Plant")
+            self.water2.setEnabled(False)
         elif self.plants[1][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water2 = QtWidgets.QPushButton("Water Tomorrow")
             self.water2.setEnabled(False)
@@ -307,6 +339,7 @@ class Watering(QtWidgets.QWidget):
             self.water3 = QtWidgets.QPushButton("Water Now")
         elif self.plants[2][1] == None:
             self.water3 = QtWidgets.QPushButton("No Plant")
+            self.water3.setEnabled(False)
         elif self.plants[2][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water3 = QtWidgets.QPushButton("Water Tomorrow")
             self.water3.setEnabled(False)
@@ -316,6 +349,7 @@ class Watering(QtWidgets.QWidget):
             self.water4 = QtWidgets.QPushButton("Water Now")
         elif self.plants[3][1] == None:
             self.water4 = QtWidgets.QPushButton("No Plant")
+            self.water4.setEnabled(False)
         elif self.plants[3][1] == datetime.date.today() + datetime.timedelta(days=1):
             self.water4 = QtWidgets.QPushButton("Water Tomorrow")
             self.water4.setEnabled(False)
@@ -345,13 +379,13 @@ class Watering(QtWidgets.QWidget):
         watering_list = QtWidgets.QVBoxLayout()
         watering_list.addWidget(self.weather)
         watering_list.addWidget(get_weather)
-        watering_list.addWidget(rt1)
+        watering_list.addWidget(plant_name_1)
         watering_list.addLayout(butstat1)
-        watering_list.addWidget(rt2)
+        watering_list.addWidget(plant_name_2)
         watering_list.addLayout(butstat2)
-        watering_list.addWidget(rt3)
+        watering_list.addWidget(plant_name_3)
         watering_list.addLayout(butstat3)
-        watering_list.addWidget(rt4)
+        watering_list.addWidget(plant_name_4)
         watering_list.addLayout(butstat4)
         watering_list.addWidget(self.back_button)
 
@@ -504,17 +538,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setWindowTitle("PLANT ENCYCLOPEDIA by Dan")
         self.startMainMenu()
 
-
-
     def startMainMenu(self):
         self.Window = MainMenu(self, self.plant_list)
         self.setCentralWidget(self.Window)
-        self.Window.button1.clicked.connect(self.startBrowseMenu)
-        self.Window.button2.clicked.connect(self.startBrowseMenuRandom)
-        self.Window.button3.clicked.connect(self.startWatering)
-        self.Window.button5.clicked.connect(self.startBrowseMenuDisplayed)
-        self.Window.button4.clicked.connect(self.exit)
-        self.Window.button7.clicked.connect(self.help)
+        self.Window.button_1.clicked.connect(self.startBrowseMenu)
+        self.Window.button_2.clicked.connect(self.startBrowseMenuRandom)
+        self.Window.button_3.clicked.connect(self.startWatering)
+        self.Window.button_5.clicked.connect(self.startBrowseMenuDisplayed)
+        self.Window.button_4.clicked.connect(self.exit)
+        self.Window.button_7.clicked.connect(self.help)
         self.show()
 
     def startBrowseMenu(self):
@@ -546,6 +578,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.Window)
         self.Window.back_button.clicked.connect(self.startMainMenu)
         self.passed = 1
+        self.Window.rem_button_1.clicked.connect(self.remove_1)
+        self.Window.rem_button_2.clicked.connect(self.remove_2)
+        self.Window.rem_button_3.clicked.connect(self.remove_3)
+        self.Window.rem_button_4.clicked.connect(self.remove_4)
         self.show()
 
     def help(self):
@@ -586,15 +622,32 @@ Please note: watering support for more than 4 flowers will be added at a later d
 
     def add_to_watering(self):
         selected = self.Window.menu_widget.selectedItems()[0].text()
-        print(f"Adding {selected} to watering")
-        for plant in self.plants_selected:
-            if plant[0] == None:
-                plant[0] = selected
-                plant[1] = datetime.date.today()
-                plant[2] = self.Window.name
-                return
-        self.show_warning()
-        return
+        qm = QtWidgets.QMessageBox()
+        qm.question(self,'Add Flower?',f"Are you sure you want to add {selected} to the watering interface?", qm.Yes | qm.No)
+
+        if qm.Yes:
+            print(f"Adding {selected} to watering")
+            for plant in self.plants_selected:
+                if plant[0] == None:
+                    plant[0] = selected
+                    plant[1] = datetime.date.today()
+                    plant[2] = self.Window.name
+                    return
+            self.show_warning()
+            return
+
+    def remove_1(self):
+        self.plants_selected[0][0], self.plants_selected[0][1], self.plants_selected[0][2] = None, None, None
+        self.startWatering()
+    def remove_2(self):
+        self.plants_selected[1][0], self.plants_selected[1][1], self.plants_selected[1][2] = None, None, None
+        self.startWatering()
+    def remove_3(self):
+        self.plants_selected[2][0], self.plants_selected[2][1], self.plants_selected[2][2] = None, None, None
+        self.startWatering()
+    def remove_4(self):
+        self.plants_selected[3][0], self.plants_selected[3][1], self.plants_selected[3][2] = None, None, None
+        self.startWatering()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
